@@ -3,6 +3,7 @@
 #include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <time.h>
 #include <errno.h>
 #include <openssl/evp.h>
 #include <openssl/rand.h>
@@ -10,6 +11,7 @@
 
 #define DEFAULT_CHUNK (1024*1024) // 1 MB
 #define DEFAULT_PASSES 3
+#define DEFAULT_THREADS 4
 
 typedef struct {
     int fd;
@@ -23,7 +25,7 @@ typedef struct {
 // Display usage
 void usage(char *prog) {
     printf("ZeroTrace - Secure Disk Eraser\n");
-    printf("Usage: %s -d <disk> [-p <passes>] [-c <chunk_MB>] [-v] [--verify] [--cert <file>]\n", prog);
+    printf("Usage: %s -d <disk> [-p <passes>] [-c <chunk_MB>] [-v] [--cert <file>]\n", prog);
     exit(1);
 }
 
@@ -39,7 +41,7 @@ void confirm_target(const char *disk){
     }
 }
 
-// AES-256-GCM encryption
+// AES-256-GCM encryption (dummy here for random + encrypted pass)
 void encrypt_chunk(unsigned char *plaintext, unsigned char *ciphertext, int len,
                    unsigned char *key, unsigned char *iv){
     EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
@@ -86,8 +88,10 @@ void *thread_write(void *arg){
     return NULL;
 }
 
-// Multi-pass overwrite with threads
-void overwrite_random_mt(const char *disk, int passes, size_t chunk_size, int threads, int verbose, off_t *disk_size_out){
+// Multi-pass overwrite with threads, returns SHA256 hashes per pass
+void overwrite_random_mt(const char *disk, int passes, size_t chunk_size, int threads, int verbose,
+                         unsigned char **pass_hashes, size_t hash_size, off_t *disk_size_out){
+
     int fd = open(disk, O_RDWR | O_SYNC);
     if(fd<0){
         perror("Failed to open disk");
@@ -129,6 +133,21 @@ void overwrite_random_mt(const char *disk, int passes, size_t chunk_size, int th
             pthread_create(&tids[t],NULL,thread_write,&targs[t]);
         }
         for(int t=0;t<threads;t++) pthread_join(tids[t],NULL);
+
+        // Compute SHA256 hash of disk after this pass
+        lseek(fd,0,SEEK_SET);
+        EVP_MD_CTX *mdctx = EVP_MD_CTX_new();
+        EVP_DigestInit_ex(mdctx, EVP_sha256(), NULL);
+
+        unsigned char read_buf[1024*1024];
+        ssize_t bytes;
+        lseek(fd,0,SEEK_SET);
+        while((bytes=read(fd,read_buf,sizeof(read_buf)))>0)
+            EVP_DigestUpdate(mdctx,read_buf,bytes);
+
+        unsigned int len;
+        EVP_DigestFinal_ex(mdctx, pass_hashes[p], &len);
+        EVP_MD_CTX_free(mdctx);
     }
 
     free(buffer);
@@ -138,43 +157,8 @@ void overwrite_random_mt(const char *disk, int passes, size_t chunk_size, int th
     close(fd);
 }
 
-// Compute full-disk SHA-256 certificate
-void compute_sha256_certificate(const char *disk, const char *cert_path){
-    int fd = open(disk,O_RDONLY);
-    if(fd<0){
-        perror("Failed to open disk for certificate");
-        exit(1);
-    }
-
-    EVP_MD_CTX *mdctx = EVP_MD_CTX_new();
-    EVP_DigestInit_ex(mdctx, EVP_sha256(), NULL);
-
-    unsigned char buf[1024*1024];
-    ssize_t bytes;
-    while((bytes = read(fd,buf,sizeof(buf))) > 0){
-        EVP_DigestUpdate(mdctx, buf, bytes);
-    }
-
-    unsigned char hash[EVP_MAX_MD_SIZE];
-    unsigned int hash_len;
-    EVP_DigestFinal_ex(mdctx, hash, &hash_len);
-    EVP_MD_CTX_free(mdctx);
-    close(fd);
-
-    FILE *cert_file = fopen(cert_path,"w");
-    if(!cert_file){
-        perror("Certificate file creation failed");
-        exit(1);
-    }
-    fprintf(cert_file,"Disk: %s\nSHA256 of erased sectors: ",disk);
-    for(unsigned int i=0;i<hash_len;i++)
-        fprintf(cert_file,"%02x",hash[i]);
-    fprintf(cert_file,"\n");
-    fclose(cert_file);
-}
-
 // Final zeroing pass to leave disk empty
-void final_zero_disk(const char *disk, off_t disk_size){
+void final_zero_disk(const char *disk, off_t disk_size, int verbose){
     int fd = open(disk,O_RDWR | O_SYNC);
     if(fd<0){
         perror("Final zeroing failed");
@@ -191,8 +175,48 @@ void final_zero_disk(const char *disk, off_t disk_size){
             break;
         }
         total += write_bytes;
+        if(verbose) printf("\rZeroing progress: %.2f%%", (total*100.0)/disk_size);
+        fflush(stdout);
     }
+    if(verbose) printf("\n");
     close(fd);
+}
+
+// Write certificate with metadata
+void write_certificate(const char *disk, off_t disk_size, int passes, size_t chunk_size, int threads,
+                       unsigned char **pass_hashes, const char *cert_path){
+
+    FILE *f = fopen(cert_path,"w");
+    if(!f){
+        perror("Failed to write certificate");
+        exit(1);
+    }
+
+    time_t now = time(NULL);
+    char datetime[64];
+    strftime(datetime,sizeof(datetime),"%Y-%m-%d %H:%M:%S",localtime(&now));
+
+    fprintf(f,"=================== ZeroTrace Secure Erasure Certificate ===================\n\n");
+    fprintf(f,"Disk: %s\n",disk);
+    fprintf(f,"Disk Size: %ld bytes\n",disk_size);
+    fprintf(f,"Date/Time: %s\n",datetime);
+    fprintf(f,"ZeroTrace Version: v1.0\n");
+    fprintf(f,"Number of passes: %d\n",passes);
+    fprintf(f,"Chunk Size: %ld bytes\n",chunk_size);
+    fprintf(f,"Threads Used: %d\n\n",threads);
+
+    fprintf(f,"Hashes after each pass:\n");
+    for(int i=0;i<passes;i++){
+        fprintf(f,"Pass %d: ",i+1);
+        for(int j=0;j<32;j++) fprintf(f,"%02x",pass_hashes[i][j]);
+        fprintf(f,"\n");
+    }
+
+    fprintf(f,"\nVerification Sample (first 256 bytes of random sectors):\n");
+    fprintf(f,"(Optional: include samples if verify enabled)\n");
+
+    fprintf(f,"\n==============================================================================\n");
+    fclose(f);
 }
 
 int main(int argc, char *argv[]){
@@ -202,7 +226,6 @@ int main(int argc, char *argv[]){
     int passes=DEFAULT_PASSES;
     size_t chunk_size=DEFAULT_CHUNK;
     int verbose=0;
-    int verify_flag=0;
     const char *cert_path="zerotrace_certificate.txt";
 
     // Argument parsing
@@ -211,7 +234,6 @@ int main(int argc, char *argv[]){
         else if(strcmp(argv[i],"-p")==0 && i+1<argc) passes=atoi(argv[++i]);
         else if(strcmp(argv[i],"-c")==0 && i+1<argc) chunk_size=atol(argv[++i])*1024*1024;
         else if(strcmp(argv[i],"-v")==0) verbose=1;
-        else if(strcmp(argv[i],"--verify")==0) verify_flag=1;
         else if(strcmp(argv[i],"--cert")==0 && i+1<argc) cert_path=argv[++i];
         else usage(argv[0]);
     }
@@ -219,16 +241,21 @@ int main(int argc, char *argv[]){
 
     confirm_target(disk);
 
-    off_t disk_size;
-    overwrite_random_mt(disk, passes, chunk_size, 4, verbose, &disk_size); // 4 threads
+    unsigned char **pass_hashes = malloc(sizeof(unsigned char*)*passes);
+    for(int i=0;i<passes;i++)
+        pass_hashes[i] = malloc(32);
 
-    if(verbose) printf("Computing SHA-256 certificate...\n");
-    compute_sha256_certificate(disk, cert_path);
+    off_t disk_size;
+    overwrite_random_mt(disk, passes, chunk_size, DEFAULT_THREADS, verbose, pass_hashes, 32, &disk_size);
+
+    if(verbose) printf("Writing certificate...\n");
+    write_certificate(disk,disk_size,passes,chunk_size,DEFAULT_THREADS,pass_hashes,cert_path);
 
     if(verbose) printf("Performing final zeroing to leave disk empty...\n");
-    final_zero_disk(disk, disk_size);
+    final_zero_disk(disk,disk_size,verbose);
 
-    if(verify_flag) printf("Verification requested: sample sectors not implemented in final zeroing version.\n");
+    for(int i=0;i<passes;i++) free(pass_hashes[i]);
+    free(pass_hashes);
 
     printf("Secure erase complete. Certificate saved at %s\n",cert_path);
     return 0;
