@@ -1,0 +1,22 @@
+=================== ZeroTrace Secure Erasure Certificate ===================
+
+Disk: test_disk.img
+Disk Size: 104857600 bytes
+Date/Time: 2025-09-07 15:48:04
+ZeroTrace Version: v1.0
+Number of passes: 6
+Chunk Size: 1048576 bytes
+Threads Used: 4
+
+Hashes after each pass:
+Pass 1: a27c0fa4e4ff39eb756b9bb476347e795fdede1eeb54bbe937486262ec78c9a9
+Pass 2: f64be028a4bd34a36095f21811d69cd17c6c1aa3955a4bfe2d53b0d61fce69af
+Pass 3: 0d5722d902004df84d1be6ef07fc5f645a190ae28b54d97b06e13ca61b2e8477
+Pass 4: 94b5aa6068676a093abd79ac3618a3ee5f5f55396ca5e0b1ac8a657f366e4062
+Pass 5: 6824b3936c9d9b3ff17fcbbb4eb1fb6ebe748df3749e90a2b82e4bcbe95158b6
+Pass 6: bf6ba7e7b78d5125ed20420d92bee0597355579d17544c6a52eeb62646dea305
+
+Verification Sample (first 256 bytes of random sectors):
+(Optional: include samples if verify enabled)
+
+==============================================================================
