@@ -1,0 +1,22 @@
+=================== ZeroTrace Secure Erasure Certificate ===================
+
+Target: test_disk6.img
+Target Size: 524288000 bytes
+Date/Time: 2025-09-09 05:07:28
+ZeroTrace Version: v1.0
+Number of passes: 3
+Per-thread buffer (chunk): 1048576 bytes
+Threads used: 2
+
+Hashes after each pass (SHA-256):
+Pass 1: 1e7dbfbf9cc2dbb1dd6cf6de00618cb737a2946b03293b8357b46b9a162f9058
+Pass 2: fb4cdfff85ef9dc6c22386add971baf72e0bb82c125694e0f159dd6855517e8f
+Pass 3: f1ed78aea9bdc39db49cfe56c3c89525c328e6c33d25e2f2ad4abdd1ac8bad4d
+
+Final Zeroed Disk Hash (SHA-256): a08a92258f621b55d08ad1e84c90c2ea6286fc6b6c9a4dfa7156afb16c190170
+
+Notes:
+ - Per-pass hashes are full-disk SHA-256 computed after each overwrite pass.
+ - Final hash computed after final zeroing pass; it matches current disk contents.
+ - This certificate is a textual record; convert to PDF as needed.
+==============================================================================
