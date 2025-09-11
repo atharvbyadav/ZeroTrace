@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZeroTrace – Secure, Verifiable Data Erasure</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="navbar">
+    <div class="navbar-container">
+      <a href="#hero" class="logo">ZeroTrace</a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="#certificate">Certificate</a></li>
+          <li><a href="#developers">Developers</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="hero" class="hero">
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <h1 class="fade-in">Provable Data Erasure. Cryptographically Verified.</h1>
+          <p class="fade-in">ZeroTrace is a secure, auditable toolkit for erasing storage devices. It generates tamper-proof certificates to provide definitive proof of data destruction for enterprise, forensic, and privacy-conscious users.</p>
+          <div class="hero-buttons fade-in">
+            <a href="#" class="btn primary">Get Started</a>
+            <a href="#features" class="btn secondary">Learn More</a>
+          </div>
+        </div>
+        <div class="hero-image-container fade-in">
+            <img class="showcase-img3 showcase-img--hero" src="assets/ZeroTrace.png" alt="Abstract secure data architecture">
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="section">
+        <div class="container text-center fade-in">
+            <h2>A Toolkit Built for Trust and Integration</h2>
+            <p>ZeroTrace isn't just an erasure tool; it's a complete attestation system.</p>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <img src="assets/erazer-bg.png" alt="Shield icon" class="feature-icon">
+                    <h3>Provable Erasure</h3>
+                    <p>Generates cryptographic evidence and tamper-evident certificates after every wipe.</p>
+                </div>
+                <div class="feature-card">
+                    <img src="assets/ss-bg.png" alt="Puzzle pieces icon" class="feature-icon">
+                    <h3>Modular & Pluggable</h3>
+                    <p>Features pluggable erase engines (ATA Secure Erase, Overwrite, Crypto) and reporting modules.</p>
+                </div>
+                <div class="feature-card">
+                    <img src="assets/card-bg.png" alt="Document icon" class="feature-icon">
+                    <h3>Auditable & Compliant</h3>
+                    <p>Meets regulatory needs with robust logging, signed certificates, and QR verification.</p>
+                </div>
+                 <div class="feature-card">
+                    <img src="assets/shield-bg.png" alt="Sliders icon" class="feature-icon">
+                    <h3>Safe & Correct</h3>
+                    <p>Includes safe device detection, interactive confirmations, and a simulation mode to prevent errors.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="section">
+        <div class="container text-center fade-in">
+            <h2>The Erasure & Attestation Workflow</h2>
+            <p>From command to certificate, every step is logged and verified.</p>
+            <img class="showcase-img showcase-img--diagram" src="assets/ZeroTrace_Progress.png" alt="ZeroTrace workflow diagram showing steps from command to certificate" loading="lazy">
+        </div>
+    </section>
+
+    <section id="certificate" class="section">
+      <div class="container two-col fade-in">
+        <div class="image-wrapper">
+          <img class="showcase-img" src="assets/ZeroTrace_Cert.png" alt="ZeroTrace PDF certificate mockup" loading="lazy">
+        </div>
+        <div class="text-content">
+          <h2>Signed, Sealed, and Delivered</h2>
+          <p>The final artifact is more than a log file. It's a portable, verifiable, and tamper-proof JSON or PDF document containing all critical metadata about the erasure event.</p>
+          <ul>
+            <li>Device model, serial number, and size</li>
+            <li>Erasure method, passes, and pattern used</li>
+            <li>Cryptographic hashes of pre/post-wipe data</li>
+            <li>Timestamps, duration, and throughput metrics</li>
+            <li>ED25519 signature to detect any tampering</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    
+    <section id="developers" class="section">
+        <div class="container two-col reverse fade-in">
+            <div class="code-wrapper">
+                <div class="code-header">
+                    <span>bash</span>
+                </div>
+                <pre><code>zerotrace erase \
+  --device /dev/sdb \
+  --method overwrite \
+  --passes 3 \
+  --pattern random \
+  --sign \
+  --cert-out ./certs/sdb_cert.json \
+  --yes</code></pre>
+            </div>
+            <div class="text-content">
+                <h2>Built for Integration</h2>
+                <p>ZeroTrace is command-line-first and designed to be a building block in larger workflows. Integrate it into asset management systems, CI/CD pipelines, or forensic toolchains with its CLI, REST API, and library bindings.</p>
+                <div class="hero-buttons">
+                    <a href="#" class="btn secondary">Read API Docs</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="use-cases" class="section">
+        <div class="container text-center fade-in">
+            <h2>Who is ZeroTrace For?</h2>
+            <p>Designed for professionals who require provable data destruction.</p>
+            <div class="use-case-grid">
+                <div class="use-case-item">
+                    <img src="assets/ZEROTRACE_cert-ssd.png" alt="Server rack icon" class="use-case-icon"><br>
+                    IT Asset Disposal
+                </div>
+                <div class="use-case-item">
+                    <img src="" alt="Magnifying glass icon" class="use-case-icon"><br>
+                    Forensics & Security
+                </div>
+                <div class="use-case-item">
+                    <img src="" class="use-case-icon"><br>
+                    Regulatory Compliance
+                </div>
+                <div class="use-case-item">
+                    <img src="" alt="User shield icon" class="use-case-icon"><br>
+                    Privacy Advocates
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section">
+        <div class="container text-center fade-in">
+            <h2>Get In Touch</h2>
+            <p>We’d love to hear your feedback and ideas.</p>
+            <form class="contact-form">
+                <input type="text" placeholder="Your Name" required>
+                <input type="email" placeholder="Your Email" required>
+                <textarea placeholder="Your Message" rows="5" required></textarea>
+                <button type="submit" class="btn primary">Send Message</button>
+            </form>
+        </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2025 ZeroTrace Project. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
