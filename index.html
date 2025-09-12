@@ -153,12 +153,16 @@
         <div class="container text-center fade-in">
           <h2>Get In Touch</h2>
             <p>We’d love to hear your feedback and ideas.</p>
-            <form class="contact-form" action="https://formspree.io/f/xblabdzr" method="POST">
+            <form id="contactForm" class="contact-form" novalidate>
               <input type="text" name="name" placeholder="Your Name" required>
               <input type="email" name="email" placeholder="Your Email" required>
               <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
               <button type="submit" class="btn primary">Send Message</button>
             </form>
+            <div id="thankYouMessage" class="thank-you" style="display:none; margin-top:1rem;">
+              <h3>Thank you!</h3>
+              <p>We received your message and will get back to you soon.</p>
+            </div>
         </div>
       </div>
     </section>
@@ -171,5 +175,29 @@
   </footer>
 
   <script src="script.js" defer></script>
+  <script>
+    (function() {
+      const form = document.getElementById('contactForm');
+      const thankYou = document.getElementById('thankYouMessage');
+      if (!form || !thankYou) return;
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        // Basic client-side validation
+        const name = form.querySelector('input[name="name"]').value.trim();
+        const email = form.querySelector('input[name="email"]').value.trim();
+        const message = form.querySelector('textarea[name="message"]').value.trim();
+        if (!name || !email || !message) {
+          // Simple feedback: focus the first empty field
+          if (!name) form.querySelector('input[name="name"]').focus();
+          else if (!email) form.querySelector('input[name="email"]').focus();
+          else form.querySelector('textarea[name="message"]').focus();
+          return;
+        }
+        // Hide form and show thank-you message
+        form.style.display = 'none';
+        thankYou.style.display = 'block';
+      });
+    })();
+  </script>
 </body>
 </html>
