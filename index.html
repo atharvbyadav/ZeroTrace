@@ -153,11 +153,11 @@
         <div class="container text-center fade-in">
           <h2>Get In Touch</h2>
             <p>We’d love to hear your feedback and ideas.</p>
-            <form class="contact-form">
-                <input type="text" placeholder="Your Name" required>
-                <input type="email" placeholder="Your Email" required>
-                <textarea placeholder="Your Message" rows="5" required></textarea>
-                <button type="submit" class="btn primary">Send Message</button>
+            <form class="contact-form" action="https://formspree.io/f/xblabdzr" method="POST">
+              <input type="text" name="name" placeholder="Your Name" required>
+              <input type="email" name="email" placeholder="Your Email" required>
+              <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+              <button type="submit" class="btn primary">Send Message</button>
             </form>
         </div>
       </div>
