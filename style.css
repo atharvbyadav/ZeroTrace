@@ -186,6 +186,18 @@ li::marker {
   height: auto;
 }
 
+.image-wrapper2 {
+  width: 100%;
+  height: auto;
+}
+
+.image-wrapper4 {
+  width: 150%;
+  height: auto;
+  padding: 0;
+  margin-left: 100px;
+}
+
 /* --- Features Section --- */
 .text-center { text-align: center; }
 .text-center > p { margin: 0 auto 1.5rem auto; }
@@ -211,14 +223,14 @@ li::marker {
 /* --- Use Cases Section --- */
 .use-case-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     gap: 1.5rem;
     margin-top: 3rem;
 }
 
 .use-case-icon {
-    width: 350px;
-    height: 350px;
+    width: 150px;
+    height: 150px;
     margin-bottom: 1rem;
 }
 
