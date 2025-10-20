@@ -100,7 +100,7 @@ li::marker {
   top: 0;
   z-index: 100;
   width: 100%;
-  padding: 1.25rem 0;
+  padding: 0.65rem 0;
   background-color: rgba(15, 23, 36, 0.7);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
