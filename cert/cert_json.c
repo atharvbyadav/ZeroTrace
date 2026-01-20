@@ -17,31 +17,22 @@ int zt_write_json_certificate(const zt_context_t *ctx, const char *path) {
 
     fprintf(f, "{\n");
     fprintf(f, "  \"zerotrace_version\": \"%s\",\n", ctx->zerotrace_version);
-    fprintf(f, "  \"mode\": \"%s\",\n",
-            ctx->mode == ZT_MODE_DRY_RUN ? "dry-run" : "erase");
-
-    fprintf(f, "  \"timestamps\": {\n");
-    fprintf(f, "    \"start\": \"%s\",\n", start);
-    fprintf(f, "    \"end\": \"%s\"\n", end);
-    fprintf(f, "  },\n");
+    fprintf(f, "  \"timestamps\": { \"start\": \"%s\", \"end\": \"%s\" },\n",
+            start, end);
 
     fprintf(f, "  \"device\": {\n");
     fprintf(f, "    \"path\": \"%s\",\n", ctx->device.path);
-    fprintf(f, "    \"size_bytes\": %jd,\n",
+    fprintf(f, "    \"size_bytes\": %jd\n",
             (intmax_t)ctx->device.size_bytes);
-    fprintf(f, "    \"block_size\": %u,\n", ctx->device.block_size);
-    fprintf(f, "    \"transport\": \"%s\"\n", ctx->device.transport);
     fprintf(f, "  },\n");
 
     fprintf(f, "  \"erase\": {\n");
-    fprintf(f, "    \"engine\": \"%d\",\n", ctx->engine);
+    fprintf(f, "    \"engine\": %d,\n", ctx->engine);
     fprintf(f, "    \"passes\": %d,\n", ctx->passes);
-    fprintf(f, "    \"threads\": %d,\n", ctx->threads);
-    fprintf(f, "    \"chunk_bytes\": %zu\n", ctx->chunk_bytes);
+    fprintf(f, "    \"threads\": %d\n", ctx->threads);
     fprintf(f, "  }\n");
 
     fprintf(f, "}\n");
-
     fclose(f);
     return 0;
 }
