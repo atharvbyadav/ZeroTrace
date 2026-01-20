@@ -1,5 +1,6 @@
 #include "workflow.h"
 #include "../device/device.h"
+#include "../engines/engine.h"
 #include <stdio.h>
 
 int zt_run_workflow(zt_context_t *ctx) {
@@ -22,6 +23,11 @@ int zt_run_workflow(zt_context_t *ctx) {
         return 0;
     }
 
-    zt_context_set_error(ctx, 99, "Erase engines not implemented yet");
-    return -1;
+    const zt_erase_engine_t *engine = zt_get_engine("overwrite");
+    if (!engine || !engine->probe(ctx)) {
+        zt_context_set_error(ctx, 20, "No suitable erase engine");
+        return -1;
+    }
+
+    return engine->erase(ctx);
 }

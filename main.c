@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
 #include "core/context.h"
 #include "core/workflow.h"
 
 static void usage(const char *p) {
     printf("Usage:\n");
-    printf("  %s erase --device <path> [--dry-run]\n", p);
+    printf("  %s erase --device <path> [--engine overwrite] [--dry-run]\n", p);
 }
 
 int main(int argc, char **argv) {
@@ -30,6 +31,11 @@ int main(int argc, char **argv) {
         if (strcmp(argv[i], "--device") == 0 && i + 1 < argc) {
             strncpy(ctx->device.path, argv[++i],
                     sizeof(ctx->device.path) - 1);
+        } else if (strcmp(argv[i], "--engine") == 0 && i + 1 < argc) {
+            if (strcmp(argv[i + 1], "overwrite") == 0) {
+                ctx->engine = ZT_ENGINE_OVERWRITE;
+            }
+            i++;
         } else if (strcmp(argv[i], "--dry-run") == 0) {
             ctx->mode = ZT_MODE_DRY_RUN;
         }

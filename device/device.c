@@ -5,7 +5,6 @@
 #include <linux/fs.h>
 #include <sys/ioctl.h>
 #include <string.h>
-#include <stdio.h>
 
 int zt_discover_device(zt_context_t *ctx) {
     ctx->status = ZT_STATUS_DISCOVER_DEVICE;
@@ -24,9 +23,8 @@ int zt_discover_device(zt_context_t *ctx) {
 
     if (S_ISBLK(st.st_mode)) {
         unsigned long long size;
-        if (ioctl(fd, BLKGETSIZE64, &size) == 0) {
+        if (ioctl(fd, BLKGETSIZE64, &size) == 0)
             ctx->device.size_bytes = size;
-        }
     } else if (S_ISREG(st.st_mode)) {
         ctx->device.size_bytes = st.st_size;
     } else {
