@@ -32,9 +32,7 @@ int main(int argc, char **argv) {
             strncpy(ctx->device.path, argv[++i],
                     sizeof(ctx->device.path) - 1);
         } else if (strcmp(argv[i], "--engine") == 0 && i + 1 < argc) {
-            if (strcmp(argv[i + 1], "overwrite") == 0) {
-                ctx->engine = ZT_ENGINE_OVERWRITE;
-            }
+            ctx->engine = ZT_ENGINE_OVERWRITE;
             i++;
         } else if (strcmp(argv[i], "--dry-run") == 0) {
             ctx->mode = ZT_MODE_DRY_RUN;
@@ -49,9 +47,10 @@ int main(int argc, char **argv) {
 
     int rc = zt_run_workflow(ctx);
 
-    if (rc != 0) {
+    if (rc == 0)
+        printf("Certificate written to zerotrace_cert.json\n");
+    else
         fprintf(stderr, "Error: %s\n", ctx->error_msg);
-    }
 
     zt_context_destroy(ctx);
     return rc != 0;

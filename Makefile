@@ -6,7 +6,8 @@ SRC=main.c \
     core/workflow.c \
     device/device.c \
     engines/registry.c \
-    engines/overwrite.c
+    engines/overwrite.c \
+    cert/cert_json.c
 
 OUT=zerotrace
 

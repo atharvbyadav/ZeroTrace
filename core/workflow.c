@@ -1,6 +1,7 @@
 #include "workflow.h"
 #include "../device/device.h"
 #include "../engines/engine.h"
+#include "../cert/cert.h"
 #include <stdio.h>
 
 int zt_run_workflow(zt_context_t *ctx) {
@@ -15,11 +16,12 @@ int zt_run_workflow(zt_context_t *ctx) {
         printf("[DRY-RUN] Device: %s\n", ctx->device.path);
         printf("[DRY-RUN] Size: %jd bytes\n",
                (intmax_t)ctx->device.size_bytes);
-        printf("[DRY-RUN] Engine: %d\n", ctx->engine);
         printf("[DRY-RUN] No data was modified.\n");
 
         ctx->status = ZT_STATUS_COMPLETE;
         ctx->end_time = time(NULL);
+
+        zt_write_json_certificate(ctx, "zerotrace_cert.json");
         return 0;
     }
 
@@ -29,5 +31,9 @@ int zt_run_workflow(zt_context_t *ctx) {
         return -1;
     }
 
-    return engine->erase(ctx);
+    if (engine->erase(ctx) != 0)
+        return -1;
+
+    zt_write_json_certificate(ctx, "zerotrace_cert.json");
+    return 0;
 }
