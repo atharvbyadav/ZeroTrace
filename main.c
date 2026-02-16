@@ -7,6 +7,7 @@
 #include "device/device.h"
 #include "engines/engine.h"
 #include "cert/cert.h"
+#include "engines/registry.h"
 
 
 static void usage(const char *prog)

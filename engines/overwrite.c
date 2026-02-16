@@ -1,4 +1,6 @@
 #include "engine.h"
+#include "registry.h"
+
 #include "../util/random.h"
 
 #include <fcntl.h>
@@ -9,24 +11,31 @@ static int overwrite_erase(
     zt_context_t *ctx
 )
 {
-    int fd = open(ctx->device.path,O_WRONLY);
+    int fd = open(
+        ctx->device.path,
+        O_WRONLY
+    );
+
+    if (fd < 0)
+        return -1;
 
     unsigned char buf[4096];
 
     uint64_t remaining =
         ctx->device.size_bytes;
 
-    while(remaining)
+    while (remaining)
     {
         size_t w =
-            remaining>sizeof(buf)?
-            sizeof(buf):remaining;
+            remaining > sizeof(buf)
+            ? sizeof(buf)
+            : remaining;
 
-        zt_random_fill(buf,w);
+        zt_random_fill(buf, w);
 
-        write(fd,buf,w);
+        write(fd, buf, w);
 
-        remaining-=w;
+        remaining -= w;
     }
 
     close(fd);
@@ -34,8 +43,21 @@ static int overwrite_erase(
     return 0;
 }
 
+
 const zt_erase_engine_t overwrite_engine =
 {
-    .name="overwrite",
-    .erase=overwrite_erase
+    .name = "overwrite",
+    .erase = overwrite_erase
 };
+
+
+/*
+ * Core engine registration
+ */
+__attribute__((constructor))
+static void register_overwrite(void)
+{
+    zt_engine_register(
+        &overwrite_engine
+    );
+}

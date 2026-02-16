@@ -13,8 +13,14 @@ util/random.c \
 cert/cert_json.c \
 cert/sign_ed25519.c
 
+
+# Auto-load plugins
+-include engines/*/*.mk
+
+
 all:
 	$(CC) $(CFLAGS) $(SRC) -o zerotrace -lcrypto
+
 
 clean:
 	rm -f zerotrace

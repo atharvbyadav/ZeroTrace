@@ -1,9 +1,11 @@
-#include "../engine.h"
+#include "ipax_engine.h"
+#include "../registry.h"
 
-extern const zt_erase_engine_t ipax_engine;
 
-const zt_erase_engine_t *
-zt_ipax_engine_register(void)
+__attribute__((constructor))
+static void register_ipax(void)
 {
-    return &ipax_engine;
+    zt_engine_register(
+        &ipax_engine
+    );
 }
