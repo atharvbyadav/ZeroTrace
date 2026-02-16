@@ -12,9 +12,11 @@ static const zt_erase_engine_t *engines[] =
 const zt_erase_engine_t *
 zt_get_engine(const char *name)
 {
-    for(int i=0;engines[i];i++)
-        if(strcmp(name,engines[i]->name)==0)
+    for (int i = 0; engines[i]; i++)
+    {
+        if (strcmp(name, engines[i]->name) == 0)
             return engines[i];
+    }
 
     return NULL;
 }
