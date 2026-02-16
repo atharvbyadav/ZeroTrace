@@ -3,6 +3,9 @@
 
 #include "../core/context.h"
 
-int zt_write_json_certificate(const zt_context_t *ctx, const char *path);
+int zt_write_json_certificate(
+    zt_context_t *,
+    const char *
+);
 
 #endif

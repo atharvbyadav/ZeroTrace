@@ -3,6 +3,8 @@
 
 #include "../core/context.h"
 
-int zt_discover_device(zt_context_t *ctx);
+int zt_discover_device(
+    zt_context_t *
+);
 
 #endif

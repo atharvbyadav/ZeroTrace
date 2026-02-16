@@ -1,16 +1,25 @@
-#include <unistd.h>
-#include <sys/random.h>
-#include <errno.h>
+#include "random.h"
 
-int zt_random_fill(unsigned char *buf, size_t len) {
-    size_t off = 0;
-    while (off < len) {
-        ssize_t r = getrandom(buf + off, len - off, 0);
-        if (r < 0) {
-            if (errno == EINTR) continue;
-            return -1;
-        }
-        off += r;
-    }
+#include <sys/random.h>
+#include <unistd.h>
+
+int zt_random_fill(
+    unsigned char *buf,
+    size_t len
+)
+{
+    ssize_t r =
+        getrandom(
+            buf,
+            len,
+            0
+        );
+
+    if (r < 0)
+        return -1;
+
+    if ((size_t)r != len)
+        return -1;
+
     return 0;
 }
