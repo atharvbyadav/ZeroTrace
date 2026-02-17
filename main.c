@@ -13,6 +13,9 @@
 #include "cert/sign_ed25519.h"
 
 
+/*
+ * CLI usage
+ */
 static void usage(void)
 {
     printf(
@@ -28,39 +31,90 @@ static void usage(void)
 }
 
 
+/*
+ * Key generation command
+ */
 static int cmd_keygen(void)
 {
-    return zt_ed25519_keygen(
-        "zt_priv.pem",
-        "zt_pub.pem"
-    );
+    int rc =
+        zt_ed25519_keygen(
+            "zt_priv.pem",
+            "zt_pub.pem"
+        );
+
+    if (rc == 0)
+    {
+        printf("\nKey generation SUCCESS\n");
+        printf("Private key: zt_priv.pem\n");
+        printf("Public key : zt_pub.pem\n\n");
+    }
+    else
+    {
+        printf("\nKey generation FAILED\n\n");
+    }
+
+    return rc;
 }
 
 
+/*
+ * Sign certificate command
+ */
 static int cmd_sign(
     const char *cert,
     const char *key
 )
 {
-    return zt_ed25519_sign_file(
-        cert,
-        key
-    );
+    int rc =
+        zt_ed25519_sign_file(
+            cert,
+            key
+        );
+
+    if (rc == 0)
+    {
+        printf("\nSigning SUCCESS\n");
+        printf("Signature file created: signature.bin\n\n");
+    }
+    else
+    {
+        printf("\nSigning FAILED\n\n");
+    }
+
+    return rc;
 }
 
 
+/*
+ * Verify certificate command
+ */
 static int cmd_verify(
     const char *cert,
     const char *key
 )
 {
-    return zt_ed25519_verify_file(
-        cert,
-        key
-    );
+    int rc =
+        zt_ed25519_verify_file(
+            cert,
+            key
+        );
+
+    if (rc == 0)
+    {
+        printf("\nVerification SUCCESS\n\n");
+    }
+    else
+    {
+        printf("\nVerification FAILED\n\n");
+    }
+
+    return rc;
 }
 
 
+/*
+ * Erase command
+ */
 static int cmd_erase(
     const char *device,
     const char *engine_name
@@ -68,6 +122,12 @@ static int cmd_erase(
 {
     zt_context_t *ctx =
         zt_context_create();
+
+    if (!ctx)
+    {
+        printf("Failed to create context\n");
+        return 1;
+    }
 
     strncpy(
         ctx->device.path,
@@ -78,6 +138,7 @@ static int cmd_erase(
     if (zt_discover_device(ctx) != 0)
     {
         printf("Device discovery failed\n");
+        zt_context_destroy(ctx);
         return 1;
     }
 
@@ -86,18 +147,19 @@ static int cmd_erase(
 
     if (!engine)
     {
-        printf("Invalid engine\n");
+        printf("Invalid engine: %s\n", engine_name);
+        zt_context_destroy(ctx);
         return 1;
     }
 
-    printf("ZeroTrace %s\n",
+    printf("\nZeroTrace %s\n",
         ctx->zerotrace_version);
 
     printf("Device: %s (%lu bytes)\n",
         ctx->device.path,
         ctx->device.size_bytes);
 
-    printf("Engine: %s\n",
+    printf("Engine: %s\n\n",
         engine->name);
 
     int rc =
@@ -113,9 +175,12 @@ static int cmd_erase(
             "zerotrace_cert.json"
         );
 
-        printf(
-            "Certificate written: zerotrace_cert.json\n"
-        );
+        printf("\nErase SUCCESS\n");
+        printf("Certificate written: zerotrace_cert.json\n\n");
+    }
+    else
+    {
+        printf("\nErase FAILED\n\n");
     }
 
     zt_context_destroy(ctx);
@@ -124,6 +189,9 @@ static int cmd_erase(
 }
 
 
+/*
+ * Main CLI entry
+ */
 int main(
     int argc,
     char **argv
@@ -135,11 +203,17 @@ int main(
         return 1;
     }
 
+    /*
+     * keygen command
+     */
     if (strcmp(argv[1], "keygen") == 0)
     {
         return cmd_keygen();
     }
 
+    /*
+     * sign command
+     */
     if (strcmp(argv[1], "sign") == 0)
     {
         const char *cert = NULL;
@@ -163,6 +237,9 @@ int main(
         return cmd_sign(cert, key);
     }
 
+    /*
+     * verify command
+     */
     if (strcmp(argv[1], "verify") == 0)
     {
         const char *cert = NULL;
@@ -186,6 +263,9 @@ int main(
         return cmd_verify(cert, key);
     }
 
+    /*
+     * erase command
+     */
     if (strcmp(argv[1], "erase") == 0)
     {
         const char *device = NULL;
