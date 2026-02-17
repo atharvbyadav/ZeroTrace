@@ -1,102 +1,192 @@
 #include "sign_ed25519.h"
-#include <openssl/evp.h>
-#include <openssl/pem.h>
+
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-int zt_ed25519_keygen(const char *priv_path, const char *pub_path) {
-    EVP_PKEY_CTX *ctx = EVP_PKEY_CTX_new_id(EVP_PKEY_ED25519, NULL);
-    EVP_PKEY *pkey = NULL;
+#include <openssl/evp.h>
+#include <openssl/pem.h>
 
-    if (!ctx || EVP_PKEY_keygen_init(ctx) <= 0 ||
-        EVP_PKEY_keygen(ctx, &pkey) <= 0)
-        return -1;
+#define SIG_FILE "signature.bin"
 
-    FILE *fp = fopen(priv_path, "w");
-    PEM_write_PrivateKey(fp, pkey, NULL, NULL, 0, NULL, NULL);
-    fclose(fp);
 
-    fp = fopen(pub_path, "w");
-    PEM_write_PUBKEY(fp, pkey);
-    fclose(fp);
-
-    EVP_PKEY_free(pkey);
-    EVP_PKEY_CTX_free(ctx);
-    return 0;
-}
-
-static int load_key(const char *path, int priv, EVP_PKEY **out) {
-    FILE *fp = fopen(path, "r");
-    if (!fp) return -1;
-
-    *out = priv ? PEM_read_PrivateKey(fp, NULL, NULL, NULL)
-                : PEM_read_PUBKEY(fp, NULL, NULL, NULL);
-    fclose(fp);
-    return *out ? 0 : -1;
-}
-
-int zt_ed25519_sign_file(const char *file, const char *priv_key) {
-    EVP_PKEY *pkey = NULL;
-    if (load_key(priv_key, 1, &pkey) != 0)
-        return -1;
-
-    FILE *f = fopen(file, "rb");
+static int read_file(
+    const char *path,
+    unsigned char **data,
+    size_t *len
+)
+{
+    FILE *f = fopen(path, "rb");
     if (!f) return -1;
 
     fseek(f, 0, SEEK_END);
-    long len = ftell(f);
+    *len = ftell(f);
     rewind(f);
 
-    unsigned char *buf = malloc(len);
-    fread(buf, 1, len, f);
+    *data = malloc(*len);
+    if (!*data)
+    {
+        fclose(f);
+        return -1;
+    }
+
+    fread(*data, 1, *len, f);
     fclose(f);
 
-    EVP_MD_CTX *md = EVP_MD_CTX_new();
-    size_t siglen = 0;
-    unsigned char sig[64];
-
-    EVP_DigestSignInit(md, NULL, NULL, NULL, pkey);
-    EVP_DigestSign(md, sig, &siglen, buf, len);
-
-    FILE *sf = fopen("signature.bin", "wb");
-    fwrite(sig, 1, siglen, sf);
-    fclose(sf);
-
-    EVP_MD_CTX_free(md);
-    EVP_PKEY_free(pkey);
-    free(buf);
     return 0;
 }
 
-int zt_ed25519_verify_file(const char *file, const char *pub_key) {
+
+int zt_ed25519_keygen(
+    const char *priv_path,
+    const char *pub_path
+)
+{
+    EVP_PKEY_CTX *ctx =
+        EVP_PKEY_CTX_new_id(
+            EVP_PKEY_ED25519,
+            NULL
+        );
+
     EVP_PKEY *pkey = NULL;
-    if (load_key(pub_key, 0, &pkey) != 0)
+
+    EVP_PKEY_keygen_init(ctx);
+    EVP_PKEY_keygen(ctx, &pkey);
+
+    FILE *priv = fopen(priv_path, "wb");
+    FILE *pub = fopen(pub_path, "wb");
+
+    PEM_write_PrivateKey(
+        priv,
+        pkey,
+        NULL,
+        NULL,
+        0,
+        NULL,
+        NULL
+    );
+
+    PEM_write_PUBKEY(
+        pub,
+        pkey
+    );
+
+    fclose(priv);
+    fclose(pub);
+
+    EVP_PKEY_free(pkey);
+    EVP_PKEY_CTX_free(ctx);
+
+    return 0;
+}
+
+
+int zt_ed25519_sign_file(
+    const char *file,
+    const char *priv_key
+)
+{
+    unsigned char *data;
+    size_t data_len;
+
+    if (read_file(file, &data, &data_len) != 0)
         return -1;
 
-    FILE *f = fopen(file, "rb");
-    FILE *sf = fopen("signature.bin", "rb");
-    if (!f || !sf) return -1;
+    FILE *f = fopen(priv_key, "rb");
 
-    fseek(f, 0, SEEK_END);
-    long len = ftell(f);
-    rewind(f);
+    EVP_PKEY *key =
+        PEM_read_PrivateKey(f, NULL, NULL, NULL);
 
-    unsigned char *buf = malloc(len);
-    fread(buf, 1, len, f);
-
-    unsigned char sig[64];
-    size_t siglen = fread(sig, 1, sizeof(sig), sf);
-
-    EVP_MD_CTX *md = EVP_MD_CTX_new();
-    EVP_DigestVerifyInit(md, NULL, NULL, NULL, pkey);
-
-    int ok = EVP_DigestVerify(md, sig, siglen, buf, len);
-
-    EVP_MD_CTX_free(md);
-    EVP_PKEY_free(pkey);
-    free(buf);
     fclose(f);
-    fclose(sf);
 
-    return ok == 1 ? 0 : -1;
+    EVP_MD_CTX *ctx =
+        EVP_MD_CTX_new();
+
+    EVP_DigestSignInit(
+        ctx,
+        NULL,
+        NULL,
+        NULL,
+        key
+    );
+
+    unsigned char sig[128];
+    size_t sig_len;
+
+    EVP_DigestSign(
+        ctx,
+        sig,
+        &sig_len,
+        data,
+        data_len
+    );
+
+    FILE *out = fopen(SIG_FILE, "wb");
+
+    fwrite(sig, 1, sig_len, out);
+
+    fclose(out);
+
+    free(data);
+
+    EVP_MD_CTX_free(ctx);
+    EVP_PKEY_free(key);
+
+    return 0;
+}
+
+
+int zt_ed25519_verify_file(
+    const char *file,
+    const char *pub_key
+)
+{
+    unsigned char *data;
+    size_t data_len;
+
+    if (read_file(file, &data, &data_len) != 0)
+        return -1;
+
+    FILE *f = fopen(pub_key, "rb");
+
+    EVP_PKEY *key =
+        PEM_read_PUBKEY(f, NULL, NULL, NULL);
+
+    fclose(f);
+
+    unsigned char sig[128];
+    size_t sig_len;
+
+    FILE *sigf = fopen(SIG_FILE, "rb");
+
+    sig_len =
+        fread(sig, 1, sizeof(sig), sigf);
+
+    fclose(sigf);
+
+    EVP_MD_CTX *ctx =
+        EVP_MD_CTX_new();
+
+    EVP_DigestVerifyInit(
+        ctx,
+        NULL,
+        NULL,
+        NULL,
+        key
+    );
+
+    int rc =
+        EVP_DigestVerify(
+            ctx,
+            sig,
+            sig_len,
+            data,
+            data_len
+        );
+
+    EVP_MD_CTX_free(ctx);
+    EVP_PKEY_free(key);
+    free(data);
+
+    return rc == 1 ? 0 : -1;
 }
