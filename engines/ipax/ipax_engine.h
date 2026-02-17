@@ -2,6 +2,7 @@
 #define ZT_IPAX_ENGINE_H
 
 #include "../engine.h"
+#include "../registry.h"
 
 extern const zt_erase_engine_t ipax_engine;
 
