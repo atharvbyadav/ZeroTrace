@@ -1,203 +1,583 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ZeroTrace – Secure, Verifiable Data Erasure</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header class="navbar">
-    <div class="navbar-container">
-      <a href="#hero" class="logo">ZeroTrace</a>
-      <nav>
-        <ul class="nav-links">
-          <li><a href="#features">Features</a></li>
-          <li><a href="#how-it-works">How It Works</a></li>
-          <li><a href="#certificate">Certificate</a></li>
-          <li><a href="#developers">Developers</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="ZeroTrace is a cryptographically verifiable data erasure platform with certificate-based proof and modular erase engines."
+        />
+        <title>ZeroTrace | Provable Data Erasure</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div class="site-bg" aria-hidden="true"></div>
 
-  <main>
-    <section id="hero" class="hero">
-      <div class="container hero-grid">
-        <div class="hero-content">
-          <h1 class="fade-in">Provable Data Erasure. Cryptographically Verified.</h1>
-          <p class="fade-in">ZeroTrace is a secure, auditable toolkit for erasing storage devices. It generates tamper-proof certificates to provide definitive proof of data destruction for enterprise, forensic and privacy-conscious users.</p>
-          <div class="hero-buttons fade-in">
-            <a href="https://github.com/atharvbyadav/ZeroTrace" class="btn primary">Get Started</a>
-            <a href="#features" class="btn secondary">Learn More</a>
-          </div>
-        </div>
-        <div class="hero-image-container fade-in">
-            <img class="showcase-img3 showcase-img--hero" src="assets/ZeroTrace.jpeg" alt="Abstract secure data architecture">
-        </div>
-      </div>
-    </section>
-
-    <section id="features" class="section">
-        <div class="container text-center fade-in">
-            <h2>A Toolkit Built for Trust and Integration</h2>
-            <p>ZeroTrace isn't just an erasure tool; it's a complete attestation system.</p>
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <img src="assets/erazer-bg.png" alt="Shield icon" class="feature-icon">
-                    <h3>Provable Erasure</h3>
-                    <p>Generates cryptographic evidence and tamper-evident certificates after every wipe.</p>
-                </div>
-                <div class="feature-card">
-                    <img src="assets/ss-bg.png" alt="Puzzle pieces icon" class="feature-icon">
-                    <h3>Modular & Pluggable</h3>
-                    <p>Features pluggable erase engines (ATA Secure Erase, Overwrite, Crypto) and reporting modules.</p>
-                </div>
-                <div class="feature-card">
-                    <img src="assets/card-bg.png" alt="Document icon" class="feature-icon">
-                    <h3>Auditable & Compliant</h3>
-                    <p>Meets regulatory needs with robust logging, signed certificates and QR verification.</p>
-                </div>
-                 <div class="feature-card">
-                    <img src="assets/shield-bg.png" alt="Sliders icon" class="feature-icon">
-                    <h3>Safe & Correct</h3>
-                    <p>Includes safe device detection, interactive confirmations and a simulation mode to prevent errors.</p>
-                </div>
+        <header class="site-header">
+            <div class="container nav-wrap">
+                <a class="brand" href="#top" aria-label="ZeroTrace Home">
+                    <span class="brand-mark" aria-hidden="true"></span>
+                    <span class="brand-text">ZeroTrace</span>
+                </a>
+                <nav class="top-nav" aria-label="Primary navigation">
+                    <a href="#platform">Platform</a>
+                    <a href="#ipax">IPAX</a>
+                    <a href="#workflow">Workflow</a>
+                    <a href="#security">Security</a>
+                </nav>
+                <a class="btn btn-sm" href="#cta">Get Started</a>
             </div>
-        </div>
-    </section>
+        </header>
 
-    <section id="how-it-works" class="section">
-        <div class="container text-center fade-in">
-            <h2>The Erasure & Attestation Workflow</h2>
-            <p>From command to certificate, every step is logged and verified.</p>
-            <img class="showcase-img showcase-img--diagram" src="assets/ZeroTrace_Progress.jpeg" alt="ZeroTrace workflow diagram showing steps from command to certificate" loading="lazy">
-        </div>
-    </section>
-
-    <section id="certificate" class="section">
-      <div class="container two-col fade-in">
-        <div class="image-wrapper">
-          <img class="showcase-img" src="assets/ZeroTrace_Cert.jpeg" alt="ZeroTrace PDF certificate mockup" loading="lazy">
-        </div>
-        <div class="text-content">
-          <h2>Signed, Sealed and Delivered</h2>
-          <p>The final artifact is more than a log file. It's a portable, verifiable and tamper-proof JSON or PDF document containing all critical metadata about the erasure event.</p>
-          <ul>
-            <li>Device model, serial number and size</li>
-            <li>Erasure method, passes and pattern used</li>
-            <li>Cryptographic hashes of pre/post-wipe data</li>
-            <li>Timestamps, duration and throughput metrics</li>
-            <li>ED25519 signature to detect any tampering</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-    
-    <section id="developers" class="section">
-        <div class="container two-col reverse fade-in">
-            <div class="code-wrapper">
-                <div class="code-header">
-                    <span>bash</span>
+        <main id="top">
+            <section class="hero section reveal">
+                <div class="container hero-grid">
+                    <div class="hero-copy">
+                        <p class="eyebrow">Cryptographic Erasure Platform</p>
+                        <h1>
+                            Provable Data Erasure. Cryptographically Verifiable.
+                        </h1>
+                        <p class="hero-text">
+                            ZeroTrace is a cryptographic erasure platform that
+                            transforms storage devices into verifiable,
+                            auditable, and irrecoverable states.
+                        </p>
+                        <div class="hero-actions">
+                            <a
+                                class="btn btn-primary"
+                                href="https://github.com/atharvbyadav/ZeroTrace/wiki"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                >View on GitHub</a
+                            >
+                            <a class="btn btn-ghost" href="#architecture"
+                                >Explore Architecture</a
+                            >
+                        </div>
+                    </div>
+                    <div
+                        class="hero-visual card"
+                        role="img"
+                        aria-label="Cryptographic signal field visual"
+                    >
+                        <div class="placeholder diagram-wrap hero-signal">
+                            <svg
+                                class="signal-svg"
+                                viewBox="0 0 520 280"
+                                aria-hidden="true"
+                            >
+                                <defs>
+                                    <radialGradient
+                                        id="signalGlow"
+                                        cx="50%"
+                                        cy="50%"
+                                        r="50%"
+                                    >
+                                        <stop
+                                            offset="0%"
+                                            stop-color="#3B82F6"
+                                            stop-opacity="0.55"
+                                        />
+                                        <stop
+                                            offset="100%"
+                                            stop-color="#3B82F6"
+                                            stop-opacity="0"
+                                        />
+                                    </radialGradient>
+                                </defs>
+                                <circle
+                                    class="ring r1"
+                                    cx="260"
+                                    cy="140"
+                                    r="38"
+                                />
+                                <circle
+                                    class="ring r2"
+                                    cx="260"
+                                    cy="140"
+                                    r="66"
+                                />
+                                <circle
+                                    class="ring r3"
+                                    cx="260"
+                                    cy="140"
+                                    r="94"
+                                />
+                                <circle class="core" cx="260" cy="140" r="20" />
+                                <path
+                                    class="shield"
+                                    d="M260 88l34 12v31c0 24-17 43-34 50-17-7-34-26-34-50v-31l34-12z"
+                                />
+                                <circle class="dot d1" cx="180" cy="88" r="4" />
+                                <circle class="dot d2" cx="334" cy="94" r="4" />
+                                <circle
+                                    class="dot d3"
+                                    cx="358"
+                                    cy="188"
+                                    r="4"
+                                />
+                                <circle
+                                    class="dot d4"
+                                    cx="188"
+                                    cy="202"
+                                    r="4"
+                                />
+                                <rect
+                                    x="0"
+                                    y="0"
+                                    width="520"
+                                    height="280"
+                                    fill="url(#signalGlow)"
+                                    opacity="0.2"
+                                />
+                            </svg>
+                            <span class="diagram-label"
+                                >Cryptographic Signal Layer</span
+                            >
+                        </div>
+                    </div>
                 </div>
-                <pre><code>zerotrace erase \
-  --device /dev/sdb \
-  --method overwrite \
-  --passes 3 \
-  --pattern random \
-  --sign \
-  --cert-out ./certs/sdb_cert.json \
-  --yes</code></pre>
+            </section>
+
+            <section class="trust section reveal">
+                <div
+                    class="container trust-bar"
+                    role="list"
+                    aria-label="Trust indicators"
+                >
+                    <span class="badge" role="listitem"
+                        ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path
+                                d="M12 3l7 3v5c0 5-3.5 8-7 10-3.5-2-7-5-7-10V6l7-3zm-1 10l-2-2-1.4 1.4L11 16l6-6-1.4-1.4L11 13z"
+                            /></svg
+                        >Cryptographically Verifiable</span
+                    >
+                    <span class="badge" role="listitem"
+                        ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path
+                                d="M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm9 3h7v4h-7v-4z"
+                            /></svg
+                        >Pluggable Engine Architecture</span
+                    >
+                    <span class="badge" role="listitem"
+                        ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path
+                                d="M12 2a4 4 0 00-4 4v2H7a2 2 0 00-2 2v8a2 2 0 002 2h10a2 2 0 002-2v-8a2 2 0 00-2-2h-1V6a4 4 0 00-4-4zm-2 6V6a2 2 0 114 0v2h-4z"
+                            /></svg
+                        >ED25519 Signed Certificates</span
+                    >
+                    <span class="badge" role="listitem"
+                        ><svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path
+                                d="M12 2l2.7 5.5L21 8.4l-4.5 4.3 1.1 6.3L12 16l-5.6 3 1.1-6.3L3 8.4l6.3-.9L12 2z"
+                            /></svg
+                        >Research-Grade IPAX Engine</span
+                    >
+                </div>
+            </section>
+
+            <section id="platform" class="section reveal">
+                <div class="container">
+                    <div class="section-head">
+                        <p class="eyebrow">Platform Overview</p>
+                        <h2>Built for verifiable destruction at scale</h2>
+                    </div>
+                    <div class="grid cards-3">
+                        <article class="card feature-card">
+                            <span class="icon"
+                                ><svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path
+                                        d="M3 7h18v3H3V7zm0 7h12v3H3v-3zm14 0h4v3h-4v-3z"
+                                    /></svg
+                            ></span>
+                            <h3>Erase Engines</h3>
+                            <p>
+                                Modular execution layer for multiple secure
+                                destruction strategies.
+                            </p>
+                        </article>
+                        <article class="card feature-card">
+                            <span class="icon"
+                                ><svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path
+                                        d="M6 2h9l5 5v15H6V2zm8 1.5V8h4.5L14 3.5zM9 12h8v2H9v-2zm0 4h8v2H9v-2z"
+                                    /></svg
+                            ></span>
+                            <h3>Certificate Engine</h3>
+                            <p>
+                                Generates signed, audit-ready proof artifacts
+                                after every operation.
+                            </p>
+                        </article>
+                        <article class="card feature-card">
+                            <span class="icon"
+                                ><svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path
+                                        d="M12 2l8 4v6c0 5-3.2 8.4-8 10-4.8-1.6-8-5-8-10V6l8-4zm-2.2 11.3l1.4 1.4 3.8-3.8-1.4-1.4-2.4 2.4-1-1-1.4 1.4z"
+                                    /></svg
+                            ></span>
+                            <h3>Cryptographic State Engine</h3>
+                            <p>
+                                Tracks state transitions with verifiable hashing
+                                and attestation metadata.
+                            </p>
+                        </article>
+                        <article class="card feature-card">
+                            <span class="icon"
+                                ><svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path
+                                        d="M4 4h16v3H4V4zm0 6h16v3H4v-3zm0 6h10v3H4v-3z"
+                                    /></svg
+                            ></span>
+                            <h3>Ledger System</h3>
+                            <p>
+                                Tamper-evident operation logs for independent
+                                verification workflows.
+                            </p>
+                        </article>
+                        <article class="card feature-card">
+                            <span class="icon"
+                                ><svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path
+                                        d="M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm10 3h6v4h-6v-4z"
+                                    /></svg
+                            ></span>
+                            <h3>Plugin Architecture</h3>
+                            <p>
+                                Extend the platform with custom engines and
+                                enterprise integrations.
+                            </p>
+                        </article>
+                        <article class="card feature-card">
+                            <span class="icon"
+                                ><svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path
+                                        d="M3 5h18v14H3V5zm2 2v10h14V7H5zm3 7l-2-2 1.4-1.4L8 11.2l3.6-3.6L13 9l-5 5z"
+                                    /></svg
+                            ></span>
+                            <h3>CLI &amp; Automation</h3>
+                            <p>
+                                Scriptable interfaces for fleet-scale erasure
+                                and compliance pipelines.
+                            </p>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ipax" class="section reveal">
+                <div class="container split">
+                    <div>
+                        <div class="section-head left">
+                            <p class="eyebrow">Core Engine</p>
+                            <h2>IPAX: Cryptographic Erasure Engine</h2>
+                        </div>
+                        <p>
+                            IPAX (In-Place Authenticated XChaCha20) transforms
+                            storage using authenticated cryptographic state
+                            transitions.
+                        </p>
+                        <ul class="check-list">
+                            <li>Per-chunk cryptographic transformation</li>
+                            <li>State chain verification</li>
+                            <li>Ledger-based attestation</li>
+                            <li>Tamper-evident erase proof</li>
+                            <li>Crash-safe recovery model</li>
+                        </ul>
+                    </div>
+                    <div
+                        class="card placeholder visual-lg diagram-wrap ipax-diagram"
+                        role="img"
+                        aria-label="IPAX state chain diagram"
+                    >
+                        <svg
+                            class="ipax-svg"
+                            viewBox="0 0 520 320"
+                            aria-hidden="true"
+                        >
+                            <defs>
+                                <linearGradient
+                                    id="ipaxStroke"
+                                    x1="0%"
+                                    y1="0%"
+                                    x2="100%"
+                                    y2="0%"
+                                >
+                                    <stop offset="0%" stop-color="#06B6D4" />
+                                    <stop offset="100%" stop-color="#3B82F6" />
+                                </linearGradient>
+                            </defs>
+                            <polyline
+                                class="chain"
+                                points="52,160 132,104 212,200 292,120 372,182 452,142"
+                            />
+                            <circle class="chunk c1" cx="52" cy="160" r="11" />
+                            <circle class="chunk c2" cx="132" cy="104" r="11" />
+                            <circle class="chunk c3" cx="212" cy="200" r="11" />
+                            <circle class="chunk c4" cx="292" cy="120" r="11" />
+                            <circle class="chunk c5" cx="372" cy="182" r="11" />
+                            <circle class="chunk c6" cx="452" cy="142" r="11" />
+                            <text x="52" y="186" text-anchor="middle">C1</text>
+                            <text x="132" y="88" text-anchor="middle">C2</text>
+                            <text x="212" y="226" text-anchor="middle">C3</text>
+                            <text x="292" y="104" text-anchor="middle">C4</text>
+                            <text x="372" y="208" text-anchor="middle">C5</text>
+                            <text x="452" y="126" text-anchor="middle">C6</text>
+                            <rect
+                                class="hash-box"
+                                x="128"
+                                y="248"
+                                width="264"
+                                height="40"
+                                rx="10"
+                            />
+                            <text x="260" y="273" text-anchor="middle">
+                                Authenticated State Hash Chain
+                            </text>
+                        </svg>
+                        <span class="diagram-label">IPAX Transition Chain</span>
+                    </div>
+                </div>
+            </section>
+
+            <section id="architecture" class="section reveal">
+                <div class="container split reverse">
+                    <div
+                        class="card placeholder visual-lg"
+                        role="img"
+                        aria-label="Pluggable architecture placeholder"
+                    >
+                        <span>Architecture Diagram Placeholder</span>
+                    </div>
+                    <div>
+                        <div class="section-head left">
+                            <p class="eyebrow">Modular Design</p>
+                            <h2>Pluggable Engine Architecture</h2>
+                        </div>
+                        <p>ZeroTrace supports modular erase engines:</p>
+                        <div class="engine-tags" aria-label="Supported engines">
+                            <span>overwrite</span>
+                            <span>ipax</span>
+                            <span>secure erase</span>
+                            <span>crypto erase</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section reveal">
+                <div class="container split">
+                    <div>
+                        <div class="section-head left">
+                            <p class="eyebrow">Certificate Layer</p>
+                            <h2>Signed Erasure Certificates</h2>
+                        </div>
+                        <p>
+                            ZeroTrace generates signed JSON certificates
+                            containing:
+                        </p>
+                        <ul class="check-list">
+                            <li>Device metadata</li>
+                            <li>Engine used</li>
+                            <li>Erasure proof</li>
+                            <li>Cryptographic state hash</li>
+                            <li>ED25519 signature</li>
+                        </ul>
+                    </div>
+                    <div
+                        class="card placeholder visual-lg diagram-wrap"
+                        role="img"
+                        aria-label="Certificate example visual"
+                    >
+                        <img
+                            class="cert-image"
+                            src="assests/ZeroTrace_Cert.jpeg"
+                            alt="Signed JSON Certificate example"
+                        />
+                        <span class="diagram-label"
+                            >Signed JSON Certificate</span
+                        >
+                    </div>
+                </div>
+            </section>
+
+            <section id="workflow" class="section reveal">
+                <div class="container">
+                    <div class="section-head">
+                        <p class="eyebrow">Workflow</p>
+                        <h2>From device to cryptographic proof</h2>
+                    </div>
+                    <div class="grid cards-5 workflow-grid">
+                        <article class="card step">
+                            <span class="step-num">1</span>
+                            <h3>Discover device</h3>
+                        </article>
+                        <article class="card step">
+                            <span class="step-num">2</span>
+                            <h3>Select engine</h3>
+                        </article>
+                        <article class="card step">
+                            <span class="step-num">3</span>
+                            <h3>Execute transformation</h3>
+                        </article>
+                        <article class="card step">
+                            <span class="step-num">4</span>
+                            <h3>Generate certificate</h3>
+                        </article>
+                        <article class="card step">
+                            <span class="step-num">5</span>
+                            <h3>Verify proof</h3>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section reveal">
+                <div class="container">
+                    <div class="section-head left">
+                        <p class="eyebrow">CLI</p>
+                        <h2>Automation-first operations</h2>
+                    </div>
+                    <pre
+                        class="code-block"
+                    ><code>./zerotrace erase --device test.img --engine ipax
+
+./zerotrace sign \
+  --cert zerotrace_cert.json \
+  --key zt_priv.pem
+
+./zerotrace verify \
+  --cert zerotrace_cert.json \
+  --key zt_pub.pem
+
+</code></pre>
+                </div>
+            </section>
+
+            <section class="section reveal">
+                <div class="container">
+                    <div class="section-head">
+                        <p class="eyebrow">Use Cases</p>
+                        <h2>Trusted by high-assurance teams</h2>
+                    </div>
+                    <div class="grid cards-5 use-cases">
+                        <article class="card">
+                            <svg
+                                class="use-icon"
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path d="M4 5h16v14H4V5zm2 2v10h12V7H6z" />
+                            </svg>
+                            <h3>Enterprise ITAD</h3>
+                        </article>
+                        <article class="card">
+                            <svg
+                                class="use-icon"
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    d="M12 2l3 5h6l-3.8 4 1.4 6L12 14l-6.6 3 1.4-6L3 7h6l3-5z"
+                                />
+                            </svg>
+                            <h3>Forensics labs</h3>
+                        </article>
+                        <article class="card">
+                            <svg
+                                class="use-icon"
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    d="M3 5h18v5H3V5zm0 7h8v7H3v-7zm10 0h8v7h-8v-7z"
+                                />
+                            </svg>
+                            <h3>Cloud providers</h3>
+                        </article>
+                        <article class="card">
+                            <svg
+                                class="use-icon"
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    d="M12 3a8 8 0 018 8v2h1v3H3v-3h1v-2a8 8 0 018-8zm-2 15h4v2h-4v-2z"
+                                />
+                            </svg>
+                            <h3>Security researchers</h3>
+                        </article>
+                        <article class="card">
+                            <svg
+                                class="use-icon"
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    d="M12 2l8 4v6c0 5.5-3.4 8.8-8 10-4.6-1.2-8-4.5-8-10V6l8-4z"
+                                />
+                            </svg>
+                            <h3>Privacy professionals</h3>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section id="security" class="section reveal">
+                <div class="container security card">
+                    <div class="section-head left">
+                        <p class="eyebrow">Security Model</p>
+                        <h2>Verification-first cryptographic assurance</h2>
+                    </div>
+                    <p>
+                        ZeroTrace binds erase execution to cryptographic state
+                        transitions, then signs the resulting certificate with
+                        ED25519. Independent verifiers can recompute state
+                        hashes, validate chain integrity, and confirm
+                        tamper-evident proof without trusting runtime logs
+                        alone.
+                    </p>
+                </div>
+            </section>
+
+            <section id="cta" class="section reveal">
+                <div class="container cta card">
+                    <h2>Deploy provable erasure workflows today.</h2>
+                    <div class="hero-actions">
+                        <a
+                            class="btn btn-primary"
+                            href="https://github.com/atharvbyadav/ZeroTrace/wiki"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            >View on GitHub</a
+                        >
+                        <a
+                            class="btn btn-ghost"
+                            href="https://github.com/atharvbyadav/ZeroTrace/wiki"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            >Read Documentation</a
+                        >
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container footer-wrap">
+                <a
+                    href="https://github.com/atharvbyadav/ZeroTrace/wiki"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >GitHub</a
+                >
+                <p>Copyright © 2026 ZeroTrace</p>
+                <p>License: Apache 2.0</p>
             </div>
-            <div class="text-content">
-                <h2>Built for Integration</h2>
-                <p>ZeroTrace is command-line-first and designed to be a building block in larger workflows. Integrate it into asset management systems, CI/CD pipelines or forensic toolchains with its CLI, REST API and library bindings.</p>
-                <div class="hero-buttons">
-                    <a href="https://github.com/atharvbyadav/ZeroTrace" class="btn secondary">Read API Docs</a>
-                </div>
-            </div>
-        </div>
-    </section>
+        </footer>
 
-    <section id="use-cases" class="section">
-        <div class="container text-center fade-in">
-            <h2>Who is ZeroTrace For?</h2>
-            <p>Designed for professionals who require provable data destruction.</p>
-            <div class="use-case-grid">
-                <div class="use-case-item">
-                    <img src="assets/ser-bg.png" alt="Server rack icon" class="use-case-icon"><br>
-                    IT Asset Disposal
-                </div>
-                <div class="use-case-item">
-                    <img src="assets/mg-bg.png" alt="Magnifying glass icon" class="use-case-icon"><br>
-                    Forensics & Security
-                </div>
-                <div class="use-case-item">
-                    <img src="assets/gra-bg.png" alt="Gavel icon" class="use-case-icon"><br>
-                    Regulatory Compliance
-                </div>
-                <div class="use-case-item">
-                    <img src="assets/shield-bg-m.png" alt="User shield icon" class="use-case-icon"><br>
-                    Privacy Advocates
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="section">
-      <div class="container two-col fade-in">
-        <div class="image-wrapper">
-          <img class="showcase-img" src="assets/ZEROTRACE_cert-ssd.jpeg" alt="ZeroTrace PDF certificate mockup" loading="lazy">
-        </div>
-        <div class="container text-center fade-in">
-          <h2>Get In Touch</h2>
-            <p>We’d love to hear your feedback and ideas.</p>
-            <form id="contactForm" class="contact-form" novalidate>
-              <input type="text" name="name" placeholder="Your Name" required>
-              <input type="email" name="email" placeholder="Your Email" required>
-              <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
-              <button type="submit" class="btn primary">Send Message</button>
-            </form>
-            <div id="thankYouMessage" class="thank-you" style="display:none; margin-top:1rem;">
-              <h3>Thank you!</h3>
-              <p>We received your message and will get back to you soon.</p>
-            </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="container">
-      <p>© 2025 ZeroTrace Project. All rights reserved.</p>
-    </div>
-  </footer>
-
-  <script src="script.js" defer></script>
-  <script>
-    (function() {
-      const form = document.getElementById('contactForm');
-      const thankYou = document.getElementById('thankYouMessage');
-      if (!form || !thankYou) return;
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        // Basic client-side validation
-        const name = form.querySelector('input[name="name"]').value.trim();
-        const email = form.querySelector('input[name="email"]').value.trim();
-        const message = form.querySelector('textarea[name="message"]').value.trim();
-        if (!name || !email || !message) {
-          // Simple feedback: focus the first empty field
-          if (!name) form.querySelector('input[name="name"]').focus();
-          else if (!email) form.querySelector('input[name="email"]').focus();
-          else form.querySelector('textarea[name="message"]').focus();
-          return;
-        }
-        // Hide form and show thank-you message
-        form.style.display = 'none';
-        thankYou.style.display = 'block';
-      });
-    })();
-  </script>
-</body>
+        <script src="script.js"></script>
+    </body>
 </html>

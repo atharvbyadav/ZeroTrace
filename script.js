@@ -1,37 +1,22 @@
-// --- Smooth scrolling for navigation links ---
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener("click", function (e) {
-    e.preventDefault();
-    const target = document.querySelector(this.getAttribute("href"));
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth" });
-    }
-  });
-});
+(() => {
+    const revealItems = document.querySelectorAll(".reveal");
 
-// --- Fade-in elements on scroll ---
-const faders = document.querySelectorAll('.fade-in');
+    if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(
+            (entries, obs) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    }
+                    entry.target.classList.add("visible");
+                    obs.unobserve(entry.target);
+                });
+            },
+            { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
+        );
 
-const appearOptions = {
-  threshold: 0.1, // Trigger when 10% of the element is visible
-  rootMargin: "0px 0px -50px 0px" // Start loading a bit before it's fully in view
-};
-
-const appearOnScroll = new IntersectionObserver(function(
-  entries,
-  appearOnScroll
-) {
-  entries.forEach(entry => {
-    if (!entry.isIntersecting) {
-      return;
+        revealItems.forEach((item) => observer.observe(item));
     } else {
-      entry.target.classList.add('is-visible');
-      appearOnScroll.unobserve(entry.target); // Stop observing once visible
+        revealItems.forEach((item) => item.classList.add("visible"));
     }
-  });
-},
-appearOptions);
-
-faders.forEach(fader => {
-  appearOnScroll.observe(fader);
-});
+})();
