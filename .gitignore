@@ -1,0 +1,22 @@
+# Build artifacts
+zerotrace
+*.o
+
+# Keys & crypto material
+zt_priv.pem
+zt_pub.pem
+signature.bin
+
+# Generated certificates
+*.json
+
+# Test files
+*.img
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
