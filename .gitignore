@@ -2,11 +2,6 @@
 zerotrace
 *.o
 
-# Keys & crypto material
-zt_priv.pem
-zt_pub.pem
-signature.bin
-
 # Generated certificates
 *.json
 
@@ -20,3 +15,17 @@ Thumbs.db
 # Editors
 .vscode/
 .idea/
+
+# release artifacts
+*.tar.gz
+*.zip
+SHA256SUMS
+
+# release folders
+zerotrace-v*
+
+# generated files
+zerotrace_cert.json
+signature.bin
+zt_priv.pem
+zt_pub.pem
