@@ -1,13 +1,22 @@
 #include "workflow.h"
 
+#include <time.h>
+
 int zt_run_workflow(
     zt_context_t *ctx,
     const zt_erase_engine_t *engine
 )
 {
-    ctx->status = ZT_STATUS_ERASING;
+    int rc;
 
-    int rc = engine->erase(ctx);
+    if (!ctx || !engine || !engine->erase)
+        return -1;
+
+    ctx->status = ZT_STATUS_ERASING;
+    ctx->start_time = time(NULL);
+
+    rc = engine->erase(ctx);
+    ctx->end_time = time(NULL);
 
     if (rc == 0)
         ctx->status = ZT_STATUS_COMPLETE;

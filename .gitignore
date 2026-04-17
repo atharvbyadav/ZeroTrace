@@ -2,12 +2,6 @@
 zerotrace
 *.o
 
-# Generated certificates
-*.json
-
-# Test files
-*.img
-
 # OS junk
 .DS_Store
 Thumbs.db
@@ -26,6 +20,19 @@ zerotrace-v*
 
 # generated files
 zerotrace_cert.json
+ipax_ledger.json
 signature.bin
 zt_priv.pem
 zt_pub.pem
+ipax.key
+before_hash.txt
+after_hash.txt
+
+# Demo and test artifacts
+*.img
+mount_dir/
+test_disk.img
+overwrite_test.img
+
+# Local tooling
+.codex

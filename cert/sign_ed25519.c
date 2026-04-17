@@ -17,7 +17,10 @@ static int read_file(
 )
 {
     FILE *f = fopen(path, "rb");
-    if (!f) return -1;
+    size_t nread;
+
+    if (!f)
+        return -1;
 
     fseek(f, 0, SEEK_END);
     *len = ftell(f);
@@ -30,8 +33,15 @@ static int read_file(
         return -1;
     }
 
-    fread(*data, 1, *len, f);
+    nread = fread(*data, 1, *len, f);
     fclose(f);
+
+    if (nread != *len)
+    {
+        free(*data);
+        *data = NULL;
+        return -1;
+    }
 
     return 0;
 }

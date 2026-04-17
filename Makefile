@@ -1,50 +1,35 @@
 CC = gcc
 
-# common compile flags
-CFLAGS = -Wall -Wextra -O2 -pthread
-
-# libraries required
-LIBS = -lcrypto -lz -lzstd -lpthread -ldl
-
-# static flags for release binary
+CFLAGS = -Wall -Wextra -Werror -O2 -pthread
+LIBS = -lcrypto -lpthread
 STATIC_FLAGS = -static
 
-# core sources
 SRC = \
-main.c \
-core/context.c \
-core/workflow.c \
-device/device.c \
-engines/registry.c \
-engines/overwrite.c \
-util/random.c \
-cert/cert_json.c \
-cert/sign_ed25519.c
+	main.c \
+	core/context.c \
+	core/workflow.c \
+	device/device.c \
+	engines/registry.c \
+	engines/overwrite.c \
+	util/random.c \
+	cert/cert_json.c \
+	cert/sign_ed25519.c
 
-# auto-load plugin engines (like IPAX)
 -include engines/*/*.mk
 
-
-# normal fast developer build
 all:
-        $(CC) $(CFLAGS) $(SRC) -o zerotrace -lcrypto -lpthread
+	$(CC) $(CFLAGS) $(SRC) -o zerotrace $(LIBS)
 
-
-# fully portable static release build
 release:
-        $(CC) $(CFLAGS) $(STATIC_FLAGS) $(SRC) -o zerotrace $(LIBS)
-        strip zerotrace
+	$(CC) $(CFLAGS) $(STATIC_FLAGS) $(SRC) -o zerotrace $(LIBS)
+	strip zerotrace
 
-
-# debug build
 debug:
-        $(CC) -Wall -Wextra -O0 -g $(SRC) -o zerotrace -lcrypto -lpthread
+	$(CC) -Wall -Wextra -O0 -g $(SRC) -o zerotrace $(LIBS)
 
-
-# cleanup generated files
 clean:
-        rm -f zerotrace
-        rm -f zerotrace_cert.json
-        rm -f signature.bin
-        rm -f zt_priv.pem
-        rm -f zt_pub.pem
+	rm -f zerotrace
+	rm -f zerotrace_cert.json
+	rm -f signature.bin
+	rm -f zt_priv.pem
+	rm -f zt_pub.pem
